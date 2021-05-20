@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NullableDatePickerTest.Views.MainPage"
+             xmlns:controls="clr-namespace:NullableDatePickerTest.Controls"
+             Title="{Binding Title}">
+
+    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+        <Label Text="Welcome to Xamarin Forms and Prism!" />
+        <!--<DatePicker Date="{Binding SelectedDateTime}" />-->
+        <controls:NullableDatePicker NullableDate="{Binding SelectedDateTime}" NullPlaceholder="No Date Selected" />
+        
+        <Entry x:Name="numDays" Placeholder="# of Days" />
+        <Button Text="Add Days" Command="{Binding AddDaysCommand}" CommandParameter="10" />
+        <Button Text="Set Date Null" Command="{Binding SetDateNullCommand}" />
+    </StackLayout>
+
+</ContentPage>
