@@ -1,5 +1,6 @@
 ﻿using NullableDatePickerTest.Controls;
 using NullableDatePickerTest.UWP.Custom;
+using System;
 using System.ComponentModel;
 using Windows.UI.Xaml.Controls;
 using Xamarin.Forms;
@@ -14,6 +15,8 @@ namespace NullableDatePickerTest.UWP.Custom
         private Windows.UI.Xaml.Controls.Button cancelButton;
         private Windows.UI.Xaml.Controls.Grid calendarView;
 
+
+
         protected override void OnElementChanged(ElementChangedEventArgs<NullableDatePicker> e)
         {
             base.OnElementChanged(e);
@@ -24,16 +27,8 @@ namespace NullableDatePickerTest.UWP.Custom
                 datePicker.MinDate = Element.MinimumDate;
                 datePicker.MaxDate = Element.MaximumDate;
                 datePicker.Date = Element.NullableDate;
+                datePicker.PlaceholderText = Element.NullableDatePlaceholder;
                 datePicker.DateChanged += DatePicker_DateChanged;
-
-                cancelButton = new Windows.UI.Xaml.Controls.Button()
-                {
-                    Content = "Clear",
-                    Margin = new Windows.UI.Xaml.Thickness(5),
-                    Command = new Command(
-                        () => datePicker.Date = null,
-                        () => datePicker.Date != null)
-                };
 
                 calendarView = new Windows.UI.Xaml.Controls.Grid();
                 calendarView.SizeChanged += CalendarView_SizeChanged;
@@ -43,16 +38,29 @@ namespace NullableDatePickerTest.UWP.Custom
                     Width = new Windows.UI.Xaml.GridLength(0, Windows.UI.Xaml.GridUnitType.Auto)
                 });
 
-                calendarView.ColumnDefinitions.Add(new Windows.UI.Xaml.Controls.ColumnDefinition()
-                {
-                    Width = new Windows.UI.Xaml.GridLength(0, Windows.UI.Xaml.GridUnitType.Auto)
-                });
-
                 calendarView.Children.Add(datePicker);
                 Windows.UI.Xaml.Controls.Grid.SetColumn(datePicker, 0);
 
-                calendarView.Children.Add(cancelButton);
-                Windows.UI.Xaml.Controls.Grid.SetColumn(cancelButton, 1);
+                // ONLY ADD CLEAR BUTTON IF DATE IS NULLABLE
+                if (e.NewElement.IsDateNullable)
+                {
+                    cancelButton = new Windows.UI.Xaml.Controls.Button()
+                    {
+                        Content = e.NewElement.CancelContent,
+                        Margin = new Windows.UI.Xaml.Thickness(5),
+                        Command = new Command(
+                            () => datePicker.Date = null,
+                            () => datePicker.Date != null)
+                    };
+
+                    calendarView.ColumnDefinitions.Add(new Windows.UI.Xaml.Controls.ColumnDefinition()
+                    {
+                        Width = new Windows.UI.Xaml.GridLength(0, Windows.UI.Xaml.GridUnitType.Auto)
+                    });
+
+                    calendarView.Children.Add(cancelButton);
+                    Windows.UI.Xaml.Controls.Grid.SetColumn(cancelButton, 1);
+                }
 
                 SetNativeControl(calendarView);
             }
@@ -62,18 +70,19 @@ namespace NullableDatePickerTest.UWP.Custom
         {
             if (e.PropertyName == NullableDatePicker.NullableDateProperty.PropertyName || e.PropertyName == Xamarin.Forms.DatePicker.FormatProperty.PropertyName)
             {
-                ((Command)cancelButton.Command).ChangeCanExecute();
+                if (Element.IsDateNullable)
+                {
+                    ((Command)cancelButton.Command).ChangeCanExecute();
 
-                if (Element.NullableDate == null)
-                {
-                    datePicker.PlaceholderText = Element.NullPlaceholder;
-                    datePicker.Date = null;
-                    return;
+                    if (Element.NullableDate == null)
+                    {
+                        datePicker.Date = null;
+                        return;
+                    }
                 }
-                else
-                {
-                    datePicker.Date = Element.NullableDate;
-                }
+
+                datePicker.Date = Element.NullableDate;
+
             }
 
             base.OnElementPropertyChanged(sender, e);

@@ -6,7 +6,9 @@ namespace NullableDatePickerTest.Controls
     public class NullableDatePicker : DatePicker
     {
         public static readonly BindableProperty NullableDateProperty = BindableProperty.Create("NullableDate", typeof(DateTime?), typeof(NullableDatePicker), null, BindingMode.TwoWay);
-        public static readonly BindableProperty NullPlaceholderProperty = BindableProperty.Create("NullPlaceholder", typeof(string), typeof(NullableDatePicker), null);
+        public static readonly BindableProperty IsDateNullableProperty = BindableProperty.Create("IsDateNullable", typeof(bool), typeof(NullableDatePicker), false);
+        public static readonly BindableProperty NullableDatePlaceholderProperty = BindableProperty.Create("NullableDatePlaceholder", typeof(string), typeof(NullableDatePicker), "No Date Selected");
+        public static readonly BindableProperty CancelContentProperty = BindableProperty.Create("CancelContent", typeof(string), typeof(NullableDatePicker), "Clear");
 
         public DateTime? NullableDate
         {
@@ -14,10 +16,21 @@ namespace NullableDatePickerTest.Controls
             set { SetValue(NullableDateProperty, value); }
         }
 
-        public string NullPlaceholder
+        public bool IsDateNullable
         {
-            get { return (string)GetValue(NullPlaceholderProperty); }
-            set { SetValue(NullPlaceholderProperty, value); }
+            get { return (bool)GetValue(IsDateNullableProperty); }
+            set { SetValue(IsDateNullableProperty, value); }
+        }
+
+        public string NullableDatePlaceholder
+        {
+            get { return (string)GetValue(NullableDatePlaceholderProperty); }
+            set { SetValue(NullableDatePlaceholderProperty, value); }
+        }
+        public string CancelContent
+        {
+            get { return (string)GetValue(CancelContentProperty); }
+            set { SetValue(CancelContentProperty, value); }
         }
     }
 }

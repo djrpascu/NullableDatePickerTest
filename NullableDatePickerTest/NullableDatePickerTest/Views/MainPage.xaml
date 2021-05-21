@@ -8,11 +8,11 @@
     <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
         <Label Text="Welcome to Xamarin Forms and Prism!" />
         <!--<DatePicker Date="{Binding SelectedDateTime}" />-->
-        <controls:NullableDatePicker NullableDate="{Binding SelectedDateTime}" NullPlaceholder="No Date Selected" />
+        <controls:NullableDatePicker NullableDate="{Binding SelectedDateTime}" IsDateNullable="False" />
         
         <Entry x:Name="numDays" Placeholder="# of Days" />
         <Button Text="Add Days" Command="{Binding AddDaysCommand}" CommandParameter="10" />
         <Button Text="Set Date Null" Command="{Binding SetDateNullCommand}" />
     </StackLayout>
 
-</ContentPage>
+</ContentPage> 
