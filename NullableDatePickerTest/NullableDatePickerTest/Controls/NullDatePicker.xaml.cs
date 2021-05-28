@@ -13,6 +13,7 @@ namespace NullableDatePickerTest.Controls
         public static readonly BindableProperty NoDatePlaceholderProperty = BindableProperty.Create(nameof(NoDatePlaceholder), typeof(string), typeof(NullableDatePicker), "No Date Selected");
         public static readonly BindableProperty DateFormatProperty = BindableProperty.Create(nameof(DateFormat), typeof(string), typeof(NullableDatePicker), "MM/dd/yyyy");
         public static readonly BindableProperty ClearDateTextProperty = BindableProperty.Create(nameof(ClearDateText), typeof(string), typeof(NullableDatePicker), "Clear");
+        public static readonly BindableProperty IsDateNullableProperty = BindableProperty.Create(nameof(IsDateNullable), typeof(bool), typeof(NullableDatePicker), true);
 
         public DateTime? SelectedDate
         {
@@ -35,6 +36,12 @@ namespace NullableDatePickerTest.Controls
         public string ClearDateText
         {
             get { return (string)GetValue(ClearDateTextProperty); }
+        }
+
+        public bool IsDateNullable
+        {
+            get { return (bool)GetValue(IsDateNullableProperty); }
+            set { SetValue(IsDateNullableProperty, value); }
         }
 
         protected override void OnPropertyChanged(string propertyName = null)
@@ -62,6 +69,14 @@ namespace NullableDatePickerTest.Controls
             {
                 cClearDateButton.Text = ClearDateText;
             }
+            else if (propertyName == IsDateNullableProperty.PropertyName)
+            {
+                if (!IsDateNullable)
+                {
+                    cClearDateButton.IsEnabled = false;
+                    cClearDateButton.IsVisible = false;
+                }
+            }
         }
 
         #endregion PROPERTIES
@@ -78,7 +93,6 @@ namespace NullableDatePickerTest.Controls
         private void cDateEntry_Focused(object sender, FocusEventArgs e)
         {
             cDateEntry.Unfocus();
-            cDateEntry.IsVisible = false;
             cDatePicker.IsVisible = true;
             cDatePicker.Focus();
         }
@@ -93,7 +107,6 @@ namespace NullableDatePickerTest.Controls
 
         private void cDatePicker_Unfocused(object sender, FocusEventArgs e)
         {
-            cDateEntry.IsVisible = true;
             cDatePicker.IsVisible = false;
         }
 
