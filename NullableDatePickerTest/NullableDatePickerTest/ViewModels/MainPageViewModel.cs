@@ -27,7 +27,7 @@ namespace NullableDatePickerTest.ViewModels
             SetDateNullCommand = new DelegateCommand(SetDateNull);
 
             Title = "Main Page";
-            SelectedDateTime = DateTime.Now.AddDays(32);
+            SelectedDateTime = null;
         }
 
         void AddDays(string numberOfDays)

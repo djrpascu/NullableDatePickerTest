@@ -24,9 +24,13 @@ namespace NullableDatePickerTest.UWP.Custom
             if (e.NewElement != null && Control == null)
             {
                 datePicker = new CalendarDatePicker();
+                datePicker.CharacterSpacing = (int)Element.CharacterSpacing;
+                datePicker.Date = Element.NullableDate;
+                datePicker.FontSize = Element.FontSize;
+                //datePicker.DateFormat = Element.Format;
                 datePicker.MinDate = Element.MinimumDate;
                 datePicker.MaxDate = Element.MaximumDate;
-                datePicker.Date = Element.NullableDate;
+                
                 datePicker.PlaceholderText = Element.NullableDatePlaceholder;
                 datePicker.DateChanged += DatePicker_DateChanged;
 
